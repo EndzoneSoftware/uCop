@@ -1,0 +1,88 @@
+﻿<form name="overviewForm"
+      ng-controller="uCop.Structure.EditController"
+      ng-show="loaded"
+      ng-submit="refresh()">
+    <umb-panel>
+        <umb-header tabs="tabs">
+
+            <div class="umb-headline-editor-wrapper span7">
+                <h1>
+                    Website structure
+                </h1>
+            </div>
+
+            <div class="span5">
+                <div class="btn-toolbar pull-right umb-btn-toolbar">
+                    <button type="submit" data-hotkey="ctrl+r" class="btn btn-success">
+                        <localize key="buttons_refresh">Refresh</localize>
+                    </button>
+                </div>
+            </div>
+        </umb-header>
+
+        <umb-tab-view>
+            <umb-tab id="tabOverview" rel="overview" class="active">
+                <umb-pane>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <td>Document type</td>
+                            <td>Templates</td>
+                            <td>URLs</td>
+                            <td>Data type</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="item in documentTypes">
+                            <td>{{item.docType}}</td>
+                            <td>
+                                <ul>
+                                    <li ng-repeat="template in item.templates">{{template}}</li>
+                                </ul>
+                            </td>
+                            <td>
+                                <ul ng-init="showUnpublished = false; showTrashed = false;">
+                                    <li ng-repeat="link in item.links.urls | filter: { trashed: 'false', published: true }"> <a ng-href="{{link.url}}">{{link.name}}</a></li>
+                                    
+                                    <li ng-show="item.links.unpublishedCount">
+                                        <span ng-show="showUnpublished">Showing</span>
+                                        {{item.links.unpublishedCount}} unpublished.
+                                        <a ng-show="showUnpublished" ng-click="showUnpublished = false">Hide.</a>
+                                        <a ng-show="!showUnpublished" ng-click="showUnpublished = true">Show.</a>
+                                        <ul>
+                                            <li ng-show="showUnpublished" ng-repeat="link in item.links.urls | filter: { trashed: 'false', published: 'false' }">{{link.name}}</li>
+                                        </ul>
+                                    </li>
+                                    
+                                    
+                                    <li ng-show="item.links.trashedCount">
+                                        <span ng-show="showTrashed">Showing</span>
+                                        {{item.links.trashedCount}} trashed.
+                                        <a ng-show="showTrashed" ng-click="showTrashed = false">Hide.</a>
+                                        <a ng-show="!showTrashed" ng-click="showTrashed = true">Show.</a>
+                                        <ul>
+                                            <li ng-show="showTrashed" ng-repeat="link in item.links.urls | filter: { trashed: true }">{{link.name}}</li>        
+                                        </ul>
+                                    </li> 
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li ng-repeat="group in item.dataType">{{group.name}}
+                                        <ul>
+                                            <li ng-repeat="property in group.properties">
+                                                {{property}}
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </umb-pane>
+            </umb-tab>
+        </umb-tab-view>
+    </umb-panel>
+</form>
+

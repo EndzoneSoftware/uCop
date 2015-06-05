@@ -1,0 +1,6 @@
+{
+	javascript: [
+	    "~/App_Plugins/uCop/backoffice/describeResource.js",
+		  "~/App_Plugins/uCop/backoffice/ucopTree/editController.js",
+	]
+}  

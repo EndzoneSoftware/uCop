@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<umbPackage>
+  <files>
+  </files>
+  <info>
+    <package>
+      <name>uCop</name>
+      <version>1.0.0</version>
+      <license url="http://unlicense.org/">UNLICENCE</license>
+      <url>https://github.com/EndzoneSoftware/uCop</url>
+      <requirements>
+        <major>3</major>
+        <minor>0</minor>
+        <patch>0</patch>
+      </requirements>
+    </package>
+    <author>
+      <name>Endzone</name>
+      <website>http://endzone.io</website>
+    </author>
+    <readme><![CDATA[]]></readme>
+  </info>
+  <DocumentTypes />
+  <Templates />
+  <Stylesheets />
+  <Macros />
+  <DictionaryItems />
+  <Languages />
+  <DataTypes />
+</umbPackage>
