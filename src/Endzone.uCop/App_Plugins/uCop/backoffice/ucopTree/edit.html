@@ -34,10 +34,18 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="item in documentTypes">
-                                <td>{{item.docType}}</td>
+                                <td>
+                                    <a href ng-click="navigateToDocumentType(item.docType.id)" title="edit document type">
+                                        {{item.docType.name}} ({{item.docType.alias}})
+                                    </a>
+                                </td>
                                 <td>
                                     <ul>
-                                        <li ng-repeat="template in item.templates">{{template}}</li>
+                                        <li ng-repeat="template in item.templates">
+                                            <a href ng-click="navigateToTemplate(template.id)" title="edit template">
+                                                {{template.name}} ({{template.alias}})
+                                            </a>
+                                        </li>
                                     </ul>
                                 </td>
                                 <td>

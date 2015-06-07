@@ -1,5 +1,5 @@
 ﻿angular.module("umbraco").controller("uCop.Structure.EditController",
-    function ($scope, describeResource) {
+    function ($scope, navigationService, describeResource) {
         $scope.loaded = false;      
         $scope.documentTypes = [];
 
@@ -21,6 +21,16 @@
                 $scope.loaded = true;
             });
         };
+
+        $scope.navigateToDocumentType = function (id) {
+            navigationService.changeSection("settings");
+            openNodeType(id); //from LegacyTreeJs
+        }
+
+        $scope.navigateToTemplate = function (id) {
+            navigationService.changeSection("settings");
+            openTemplate(id); //from LegacyTreeJs
+        }
 
         $scope.refresh();
     });

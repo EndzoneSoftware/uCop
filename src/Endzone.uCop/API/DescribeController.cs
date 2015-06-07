@@ -18,8 +18,19 @@ namespace Endzone.UCop.API
             var dataTypeDefintions = Services.DataTypeService.GetAllDataTypeDefinitions();
             return from doc in all select new
             {
-                docType = $"{doc.Name} ({doc.Alias})",
-                templates = from template in doc.AllowedTemplates select $"{template.Name} ({template.Alias})",
+                docType = new
+                {
+                    name = doc.Name,
+                    alias = doc.Alias,
+                    id = doc.Id
+                },
+                templates = from template in doc.AllowedTemplates
+                            select new
+                            {
+                                name = template.Name,
+                                alias = template.Alias,
+                                id = template.Id
+                            },
                 urls = from content in Services.ContentService.GetContentOfContentType(doc.Id)
                        select new
                        {
