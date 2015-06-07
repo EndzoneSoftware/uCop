@@ -15,6 +15,7 @@ namespace Endzone.UCop.API
         public object DocumentTypes()
         {
             var all = Services.ContentTypeService.GetAllContentTypes().ToList();
+            var dataTypeDefintions = Services.DataTypeService.GetAllDataTypeDefinitions();
             return from doc in all select new
             {
                 docType = string.Format("{0} ({1})", doc.Name, doc.Alias),
@@ -30,7 +31,12 @@ namespace Endzone.UCop.API
                            select new
                            {
                                name = propGroup.Name,
-                               properties = from prop in propGroup.PropertyTypes select prop.Name
+                               properties = from prop in propGroup.PropertyTypes
+                                            select new
+                                            {
+                                                name = prop.Name,
+                                                type = dataTypeDefintions.Where(d => d.Id == prop.DataTypeDefinitionId).Select(d => d.Name).FirstOrDefault()
+                                            } 
                            }
             };
         }
