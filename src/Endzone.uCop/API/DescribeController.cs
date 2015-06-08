@@ -21,14 +21,13 @@ namespace Endzone.UCop.API
                 docType = new
                 {
                     name = doc.Name,
-                    alias = doc.Alias,
-                    id = doc.Id
+                    id = doc.Id,
+                    parentId = doc.ParentId
                 },
                 templates = from template in doc.AllowedTemplates
                             select new
                             {
                                 name = template.Name,
-                                alias = template.Alias,
                                 id = template.Id
                             },
                 urls = from content in Services.ContentService.GetContentOfContentType(doc.Id)

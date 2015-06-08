@@ -23,6 +23,13 @@
         <umb-tab-view>
             <umb-tab id="tabOverview" rel="overview" class="active">
                 <umb-pane>
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <label for="sortMode">Sort by</label>
+                            <select class="form-control" id="sortMode" ng-model="sort.mode" ng-options="mode for mode in sort.options"></select>
+                        </div>
+                    </div>
+
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -35,15 +42,18 @@
                         <tbody>
                             <tr ng-repeat="item in documentTypes">
                                 <td>
+                                    <span ng-repeat="parent in getDocumentTypeParentHierarchyAsArray(item)">
+                                        {{parent.docType.name}} &gt;
+                                    </span>
                                     <a href ng-click="navigateToDocumentType(item.docType.id)" title="edit document type">
-                                        {{item.docType.name}} ({{item.docType.alias}})
+                                        {{item.docType.name}}
                                     </a>
                                 </td>
                                 <td>
                                     <ul>
                                         <li ng-repeat="template in item.templates">
                                             <a href ng-click="navigateToTemplate(template.id)" title="edit template">
-                                                {{template.name}} ({{template.alias}})
+                                                {{template.name}}
                                             </a>
                                         </li>
                                     </ul>
