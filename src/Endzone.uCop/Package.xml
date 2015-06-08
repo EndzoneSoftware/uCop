@@ -18,7 +18,10 @@
       <name>Endzone</name>
       <website>http://endzone.io</website>
     </author>
-    <readme><![CDATA[]]></readme>
+    <readme>
+      <![CDATA[uCop is an Umbraco CMS plugin that helps with website maintenance. The initial version shows breakdown of document types defined in a site together with some other static data, helping the editors and developers see the dependencies at a glance. The aim is to extend uCop to allow dynamic analaysis of the site based on predefined rules, aiding the development and maintenance further. This can be used to evaluate the healt of a site, or to enforce conventions and best practises.
+    
+    Stay in touch via the <a href="https://github.com/EndzoneSoftware/uCop">uCop GitHub repository</a>!]]></readme>
   </info>
   <DocumentTypes />
   <Templates />
