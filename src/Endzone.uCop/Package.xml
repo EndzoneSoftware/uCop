@@ -32,5 +32,15 @@
   <DataTypes />
   <Actions>
     <Action runat="install" undo="true" alias="AddLanguageFileKey" language="en" position="end" area="sections" key="ucop" value="uCop" />
+    <Action runat="install" alias="addDashboardSection" dashboardAlias="ucop">
+        <section>
+          <areas>
+            <area>ucop</area>
+          </areas>
+          <tab caption="About uCop">
+            <control>/App_Plugins/uCop/backoffice/dashboard.html</control>
+          </tab>
+        </section>
+      </Action>
   </Actions>
 </umbPackage>

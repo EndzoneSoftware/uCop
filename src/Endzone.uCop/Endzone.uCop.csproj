@@ -189,6 +189,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Plugins\uCop\backoffice\dashboard.html" />
     <Content Include="App_Plugins\uCop\backoffice\describeResource.js" />
     <Content Include="App_Plugins\uCop\backoffice\ucopTree\edit.html" />
     <Content Include="App_Plugins\uCop\backoffice\ucopTree\editController.js" />
