@@ -9,7 +9,7 @@
       <license url="http://unlicense.org/">UNLICENCE</license>
       <url>https://github.com/EndzoneSoftware/uCop</url>
       <requirements>
-        <major>3</major>
+        <major>7</major>
         <minor>0</minor>
         <patch>0</patch>
       </requirements>
@@ -30,4 +30,7 @@
   <DictionaryItems />
   <Languages />
   <DataTypes />
+  <Actions>
+    <Action runat="install" undo="true" alias="AddLanguageFileKey" language="en" position="end" area="sections" key="ucop" value="uCop" />
+  </Actions>
 </umbPackage>
