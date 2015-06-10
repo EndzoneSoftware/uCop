@@ -30,6 +30,15 @@
             }
         }
 
+        function buildLinks(documentType, urls, loaded) {
+            documentType.links = {
+                loaded: loaded,
+                urls: urls,
+                unpublishedCount: urls.filter(function (u) { return !u.published && !u.trashed; }).length,
+                trashedCount: urls.filter(function (u) { return u.trashed; }).length
+            }    
+        }
+
         $scope.loaded = false;      
         $scope.documentTypes = [];
 
@@ -47,14 +56,11 @@
             describeResource.getDocumentTypes().then(function (response) {
                 $scope.documentTypes = response.data;
                 $scope.documentTypes.forEach(function(dt) {
-                    dt.links = {
-                        urls: dt.urls,
-                        unpublishedCount: dt.urls.filter(function (u) { return !u.published && !u.trashed; }).length,
-                        trashedCount: dt.urls.filter(function (u) { return u.trashed; }).length
-                    }
+                    buildLinks(dt, dt.urls.sample, dt.urls.totalCount == dt.urls.sample.length);
+                    dt.links.totalCount = dt.urls.totalCount;
                     delete dt.urls;
-                    dt.children = [];
 
+                    dt.children = [];
                     hierarchy[dt.docType.id] = angular.extend(dt, hierarchy[dt.docType.id]);
                     if (!hierarchy.hasOwnProperty(dt.docType.parentId)) {
                         hierarchy[dt.docType.parentId] = {
@@ -72,11 +78,14 @@
             });
         };
 
-        $scope.getDocumentTypeParentHierarchyAsArray = function(item) {
+        $scope.getDocumentTypeParentHierarchyAsArray = function (documentType) {
+            if (documentType === undefined)
+                return [];
+
             var result = [];
-            while (item.docType.parentId > -1) {
-                item = hierarchy[item.docType.parentId];
-                result.push(item);
+            while (documentType.docType.parentId > -1) {
+                documentType = hierarchy[documentType.docType.parentId];
+                result.push(documentType);
             }
             result.reverse();
             return result;
@@ -90,6 +99,12 @@
         $scope.navigateToTemplate = function (id) {
             navigationService.changeSection("settings");
             openTemplate(id); //from LegacyTreeJs
+        }
+
+        $scope.loadUrls = function (documentType) {
+            describeResource.getUrls(documentType.docType.id).then(function(response) {
+                buildLinks(documentType, response.data, true);
+            });
         }
 
         $scope.$watch("sort.mode", function (newValue, oldValue) {

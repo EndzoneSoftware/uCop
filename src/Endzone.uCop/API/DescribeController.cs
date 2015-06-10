@@ -16,7 +16,9 @@ namespace Endzone.UCop.API
         {
             var all = Services.ContentTypeService.GetAllContentTypes().ToList();
             var dataTypeDefintions = Services.DataTypeService.GetAllDataTypeDefinitions();
-            return from doc in all select new
+            return from doc in all
+                   let instances = Services.ContentService.GetContentOfContentType(doc.Id)
+                   select new
             {
                 docType = new
                 {
@@ -30,13 +32,17 @@ namespace Endzone.UCop.API
                                 name = template.Name,
                                 id = template.Id
                             },
-                urls = from content in Services.ContentService.GetContentOfContentType(doc.Id)
-                       select new
-                       {
-                           path = GetUrlPath(content),
-                           trashed = content.Trashed,
-                           published = content.Published
-                        },
+                urls = new
+                {
+                    totalCount = instances.Count(),
+                    sample = (from content in instances
+                              select new
+                              {
+                                  path = GetUrlPath(content),
+                                  trashed = content.Trashed,
+                                  published = content.Published
+                              }).Take(10)
+                },
                 dataType = from propGroup in doc.PropertyGroups
                            select new
                            {
@@ -49,6 +55,18 @@ namespace Endzone.UCop.API
                                             } 
                            }
             };
+        }
+
+        [HttpGet]
+        public object Urls([FromUri]int contentTypeId)
+        {
+            return from content in Services.ContentService.GetContentOfContentType(contentTypeId)
+                select new
+                {
+                    path = GetUrlPath(content),
+                    trashed = content.Trashed,
+                    published = content.Published
+                };
         }
 
         private IEnumerable<UrlNode> GetUrlPath(IContent content)

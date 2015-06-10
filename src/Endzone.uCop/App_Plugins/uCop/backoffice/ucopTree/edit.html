@@ -1,6 +1,5 @@
 ﻿<form name="overviewForm"
       ng-controller="uCop.Structure.EditController"
-      ng-show="loaded"
       ng-submit="refresh()">
     <umb-panel>
         <umb-header tabs="tabs">
@@ -20,7 +19,15 @@
 
         <umb-tab-view>
             <umb-tab id="tabOverview" rel="overview" class="active">
-                <umb-pane>
+                <div ng-hide="loaded" class="text-center">
+                    <p>
+                        <img src="assets/img/loader.gif"/>
+                    </p>
+                    <p>
+                        Loading site structure...
+                    </p>
+                </div>
+                <umb-pane ng-show="loaded">
                     <div class="form-inline">
                         <div class="form-group">
                             <label for="sortMode">Sort by</label>
@@ -30,83 +37,85 @@
 
                     <table class="table table-striped">
                         <thead>
-                            <tr>
-                                <td>Document type</td>
-                                <td>Templates</td>
-                                <td>URLs</td>
-                                <td>Properties</td>
-                            </tr>
+                        <tr>
+                            <td>Document type</td>
+                            <td>Templates</td>
+                            <td>URLs</td>
+                            <td>Properties</td>
+                        </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="item in documentTypes">
-                                <td>
-                                    <span ng-repeat="parent in getDocumentTypeParentHierarchyAsArray(item)">
+                        <tr ng-repeat="item in documentTypes">
+                            <td>
+                                <span ng-repeat="parent in getDocumentTypeParentHierarchyAsArray(item)">
                                         {{parent.docType.name}} &gt;
                                     </span>
-                                    <a href ng-click="navigateToDocumentType(item.docType.id)" title="edit document type">
-                                        {{item.docType.name}}
-                                    </a>
-                                </td>
-                                <td>
-                                    <ul>
-                                        <li ng-repeat="template in item.templates">
-                                            <a href ng-click="navigateToTemplate(template.id)" title="edit template">
-                                                {{template.name}}
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </td>
-                                <td>
-                                    <ul ng-init="showUnpublished = false; showTrashed = false;">
-                                        <li ng-repeat="link in item.links.urls | filter: { trashed: 'false', published: true }">
-                                            <span ng-repeat="node in link.path">
+                                <a href ng-click="navigateToDocumentType(item.docType.id)" title="edit document type">
+                                    {{item.docType.name}}
+                                </a>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li ng-repeat="template in item.templates">
+                                        <a href ng-click="navigateToTemplate(template.id)" title="edit template">
+                                            {{template.name}}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </td>
+                            <td>
+                                <ul ng-init="showUnpublished = false; showTrashed = false;">
+                                    <li ng-hide="item.links.loaded">Showing only {{item.links.urls.length}} out of {{item.links.totalCount}}. <a ng-click="loadUrls(item)">Load all.</a></li>
+
+                                    <li ng-repeat="link in item.links.urls | filter: { trashed: 'false', published: true }">
+                                        <span ng-repeat="node in link.path">
                                                 <a ng-href="{{node.url}}">{{node.name}}</a> <span ng-hide="$last"> &gt; </span>
                                             </span>
-                                        </li>
+                                    </li>
 
-                                        <li ng-show="item.links.unpublishedCount">
-                                            <span ng-show="showUnpublished">Showing</span>
-                                            {{item.links.unpublishedCount}} unpublished.
-                                            <a ng-show="showUnpublished" ng-click="showUnpublished = false">Hide.</a>
-                                            <a ng-show="!showUnpublished" ng-click="showUnpublished = true">Show.</a>
-                                            <ul>
-                                                <li ng-show="showUnpublished" ng-repeat="link in item.links.urls | filter: { trashed: 'false', published: 'false' }">
-                                                    <span ng-repeat="node in link.path">
+                                    <li ng-show="item.links.unpublishedCount">
+                                        <span ng-show="showUnpublished">Showing</span>
+                                        {{item.links.unpublishedCount}} unpublished.
+                                        <a ng-show="showUnpublished" ng-click="showUnpublished = false">Hide.</a>
+                                        <a ng-show="!showUnpublished" ng-click="showUnpublished = true">Show.</a>
+                                        <ul>
+                                            <li ng-show="showUnpublished" ng-repeat="link in item.links.urls | filter: { trashed: 'false', published: 'false' }">
+                                                <span ng-repeat="node in link.path">
                                                         {{node.name}} <span ng-hide="$last"> &gt; </span>
                                                     </span>
-                                                </li>
-                                            </ul>
-                                        </li>
+                                            </li>
+                                        </ul>
+                                    </li>
 
 
-                                        <li ng-show="item.links.trashedCount">
-                                            <span ng-show="showTrashed">Showing</span>
-                                            {{item.links.trashedCount}} trashed.
-                                            <a ng-show="showTrashed" ng-click="showTrashed = false">Hide.</a>
-                                            <a ng-show="!showTrashed" ng-click="showTrashed = true">Show.</a>
-                                            <ul>
-                                                <li ng-show="showTrashed" ng-repeat="link in item.links.urls | filter: { trashed: true }">
-                                                    <span ng-repeat="node in link.path">
+                                    <li ng-show="item.links.trashedCount">
+                                        <span ng-show="showTrashed">Showing</span>
+                                        {{item.links.trashedCount}} trashed.
+                                        <a ng-show="showTrashed" ng-click="showTrashed = false">Hide.</a>
+                                        <a ng-show="!showTrashed" ng-click="showTrashed = true">Show.</a>
+                                        <ul>
+                                            <li ng-show="showTrashed" ng-repeat="link in item.links.urls | filter: { trashed: true }">
+                                                <span ng-repeat="node in link.path">
                                                         {{node.name}} <span ng-hide="$last"> &gt; </span>
                                                     </span>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </td>
-                                <td>
-                                    <ul>
-                                        <li ng-repeat="group in item.dataType">
-                                            {{group.name}}
-                                            <ul>
-                                                <li ng-repeat="property in group.properties">
-                                                    {{property.name}} ({{property.type}})
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </td>
-                            </tr>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li ng-repeat="group in item.dataType">
+                                        {{group.name}}
+                                        <ul>
+                                            <li ng-repeat="property in group.properties">
+                                                {{property.name}} ({{property.type}})
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                 </umb-pane>
