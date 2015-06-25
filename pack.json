@@ -1,6 +1,6 @@
 ﻿{
     "dlls": ["src/Endzone.uCop/bin/Debug/Endzone.uCop.dll", "lib/PackageActionsContrib.dll"],
     "packageXmlTemplate": "src/Endzone.uCop/Package.xml",
-    "pluginFolder": "src/Endzone.uCop/App_Plugins/uCop"
+    "includeFolders": ["src/Endzone.uCop/App_Plugins"]
 }
 
