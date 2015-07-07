@@ -5,7 +5,7 @@ using umbraco;
 using Umbraco.Core.Models;
 using Umbraco.Web.Mvc;
 using Umbraco.Web.WebApi;
-
+using Endzone.UCop.UmbracoExtensions;
 namespace Endzone.UCop.API
 {
     [PluginController(Constants.AreaName)]
@@ -13,11 +13,11 @@ namespace Endzone.UCop.API
     {
         [HttpGet]
         public object DocumentTypes()
-        {
+        {            
             var all = Services.ContentTypeService.GetAllContentTypes().ToList();
             var dataTypeDefintions = Services.DataTypeService.GetAllDataTypeDefinitions();
             return from doc in all
-                   let instances = Services.ContentService.GetContentOfContentType(doc.Id)
+                   let instances = Services.ContentService.GetPagedContentsOfContentType(doc.Id, 10, 1,"")
                    select new
             {
                 docType = new
