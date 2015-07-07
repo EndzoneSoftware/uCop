@@ -185,6 +185,7 @@
     <Compile Include="EndzoneApplication.cs" />
     <Compile Include="EndzoneTreeController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UmbracoExtensions\ContentServiceExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App_Plugins\uCop\package.manifest" />
