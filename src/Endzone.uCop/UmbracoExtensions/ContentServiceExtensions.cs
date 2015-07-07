@@ -24,8 +24,9 @@ namespace Endzone.UCop.UmbracoExtensions
         /// <param name="totalRecords"></param>
         /// <param name="orderBy"></param>
         /// <returns></returns>
-        public static IEnumerable<IContent> GetPagedContentsOfContentType(this IContentService contentService, int id, int pageSize, int pageNumber, out int totalRecords, string orderBy, Direction orderDirection = Direction.Ascending)
+        public static IEnumerable<IContent> GetPagedContentsOfContentType(this IContentService contentService, int id, int pageSize, int pageNumber, string orderBy, Direction orderDirection = Direction.Ascending)
         {
+            int totalRecords = 0;
             IDatabaseUnitOfWorkProvider uowProvider = new PetaPocoUnitOfWorkProvider();
             var repositoryFactory = new RepositoryFactory();
             using (var repository = repositoryFactory.CreateContentRepository(uowProvider.GetUnitOfWork()))
